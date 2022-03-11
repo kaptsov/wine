@@ -1,47 +1,62 @@
+import argparse
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import datetime
 import pandas
 from collections import defaultdict
 
-env = Environment(
-    loader=FileSystemLoader('.'),
-    autoescape=select_autoescape(['html', 'xml'])
-)
-
-template = env.get_template('template.html')
-
-foundation_date = datetime.date(year=1920, month=1, day=1)
-delta = (datetime.date.today() - foundation_date).days // 365
+FOUNDATION_DATE = 1920
 
 
-excel_data_df2 = pandas.read_excel(
-    'wine3.xlsx',
-    sheet_name='Лист1',
-    na_values=['N/A', 'NA'],
-    keep_default_na=False
-)
+def create_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('filename', nargs='+')
+    return parser
 
-wine_data = excel_data_df2.to_dict(orient='record')
 
-drink_types = defaultdict(list)
+def main():
+    env = Environment(
+        loader=FileSystemLoader('.'),
+        autoescape=select_autoescape(['html', 'xml'])
+    )
 
-for drink in wine_data:
-    drink_types[drink['Категория']].append({
-        'name': drink['Название'],
-        'price': drink['Цена'],
-        'type': drink['Сорт'],
-        'pic_name': drink['Картинка'],
-        'sale': drink['Акция'],
-    })
+    template = env.get_template('template.html')
 
-rendered_page = template.render(
-    age=delta,
-    wine_data=dict(sorted(drink_types.items())),
-)
+    current_year = datetime.date.today().year
 
-with open('index.html', 'w', encoding="utf8") as file:
-    file.write(rendered_page)
+    parser = create_parser()
+    excel_filename = str(parser.parse_args().filename[0])
 
-server = HTTPServer(('127.0.0.1', 8000), SimpleHTTPRequestHandler)
-server.serve_forever()
+
+    wine_collection = pandas.read_excel(
+        excel_filename,
+        sheet_name='Лист1',
+        na_values=['N/A', 'NA'],
+        keep_default_na=False
+    ).to_dict(orient='record')
+
+    drink_description = defaultdict(list)
+
+    for drink in wine_collection:
+        drink_description[drink['Категория']].append({
+            'Название': drink['Название'],
+            'Цена': drink['Цена'],
+            'Сорт': drink['Сорт'],
+            'Картинка': drink['Картинка'],
+            'Акция': drink['Акция'],
+        })
+
+    rendered_page = template.render(
+        age=current_year - FOUNDATION_DATE,
+        drink_description=dict(sorted(drink_description.items())),
+    )
+
+    with open('index.html', 'w', encoding="utf8") as file:
+        file.write(rendered_page)
+
+    server = HTTPServer(('127.0.0.1', 8000), SimpleHTTPRequestHandler)
+    server.serve_forever()
+
+
+if __name__ == '__main__':
+    main()
