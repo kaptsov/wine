@@ -113,25 +113,25 @@
             </p>
           </div>
         </div>
-        {% for wine_category in wine_data %}
+        {% for drink_category, drinks_in_category in drink_description.items() %}
         <div class="row">
           <div class="col-12 section-title text-center mb-5">
-            <h2 class="d-block">{{wine_category}}</h2>
+            <h2 class="d-block">{{drink_category}}</h2>
             <div class="row">
-              {% for wine in wine_data[wine_category] %}
+              {% for drink in drinks_in_category %}
               <div class="col-lg-4 mb-5 col-md-6">
                 <div class="wine_v_1 text-center pb-4 pt-5">
-                  <img src="images/{{wine.pic_name}}" alt="Image" class="img-fluid">
-                  {% if wine.sale %}
+                  <img src="images/{{drink.Картинка}}" alt="Image" class="img-fluid">
+                  {% if drink.Акция %}
                   <img src="assets/profitable.png" style="width:10rem;height: 10rem;position:absolute;right: -20px;top: -20px;">
                   {% endif %}
                   <div>
-                    <h3 class="heading mt-3 mb-3 text-dark">{{wine.name}}</h3>
+                    <h3 class="heading mt-3 mb-3 text-dark">{{drink.Название}}</h3>
                     <p>
-                      {% if wine.type %}
-                      <br> Сорт винограда - {{wine.type}}<br/>
+                      {% if drink.Сорт %}
+                      <br> Сорт винограда - {{drink.Сорт}}<br/>
                       {% endif %}
-                      <span class="price">{{wine.price}} руб.</span>
+                      <span class="price">{{drink.Цена}} руб.</span>
                     </p>
                   </div>
                 </div>
@@ -149,9 +149,9 @@
      <div class="container">
         <div class="row justify-content-center text-center align-items-center">
           <div class="col-md-8">
-            <h2 style="font-size: 3rem;">proofed by time</h2>
+            <h2 style="font-size: 3rem;">проверено временем</h2>
             <div></div>
-            <span class="sub-title" style="font-size: 2.5rem;">With you for {{age}} years...</span>
+            <span class="sub-title" style="font-size: 2.5rem;">Уже {{age}} лет с вами...</span>
           </div>
         </div>
       </div>
