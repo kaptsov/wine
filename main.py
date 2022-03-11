@@ -1,9 +1,10 @@
 import argparse
-from http.server import HTTPServer, SimpleHTTPRequestHandler
-from jinja2 import Environment, FileSystemLoader, select_autoescape
 import datetime
 import pandas
+
 from collections import defaultdict
+from http.server import HTTPServer, SimpleHTTPRequestHandler
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 FOUNDATION_DATE = 1920
 
@@ -26,7 +27,6 @@ def main():
 
     parser = create_parser()
     excel_filename = str(parser.parse_args().filename[0])
-
 
     wine_collection = pandas.read_excel(
         excel_filename,
