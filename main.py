@@ -11,7 +11,7 @@ FOUNDATION_DATE = 1920
 
 def create_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('filename', nargs='+')
+    parser.add_argument('filepath', nargs='+')
     return parser
 
 
@@ -26,7 +26,7 @@ def main():
     current_year = datetime.date.today().year
 
     parser = create_parser()
-    excel_filename = str(parser.parse_args().filename[0])
+    excel_filename = parser.filepath
 
     wine_collection = pandas.read_excel(
         excel_filename,
