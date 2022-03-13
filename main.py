@@ -26,10 +26,10 @@ def main():
     current_year = datetime.date.today().year
 
     parser = create_parser()
-    excel_filename = parser.filepath
+    excel_filepath = parser.parse_args().filepath[0]
 
     wine_collection = pandas.read_excel(
-        excel_filename,
+        excel_filepath,
         sheet_name='Лист1',
         na_values=['N/A', 'NA'],
         keep_default_na=False
