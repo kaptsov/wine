@@ -35,10 +35,10 @@ def main():
         keep_default_na=False
     ).to_dict(orient='record')
 
-    drink_description = defaultdict(list)
+    drink_collection = defaultdict(list)
 
     for drink in wine_collection:
-        drink_description[drink['Категория']].append({
+        drink_collection[drink['Категория']].append({
             'Название': drink['Название'],
             'Цена': drink['Цена'],
             'Сорт': drink['Сорт'],
@@ -48,7 +48,7 @@ def main():
 
     rendered_page = template.render(
         age=current_year - FOUNDATION_DATE,
-        drink_description=dict(sorted(drink_description.items())),
+        drink_collection=dict(sorted(drink_collection.items())),
     )
 
     with open('index.html', 'w', encoding="utf8") as file:
