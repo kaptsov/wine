@@ -1,9 +1,9 @@
 import argparse
 import datetime
-import pandas
-
 from collections import defaultdict
 from http.server import HTTPServer, SimpleHTTPRequestHandler
+
+import pandas
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 FOUNDATION_DATE = 1920
